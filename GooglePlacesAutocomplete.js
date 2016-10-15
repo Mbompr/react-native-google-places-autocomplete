@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { TextInput, View, ListView, ScrollView, Image, Text, Dimensions, TouchableHighlight, TouchableWithoutFeedback, Platform, ActivityIndicator, PixelRatio } from 'react-native';
+import { TextInput, View, ListView, ScrollView, Image, Text, Dimensions, TouchableHighlight, TouchableWithoutFeedback, Platform, ActivityIndicator, PixelRatio, PermissionsAndroid } from 'react-native';
 import Qs from 'qs';
 
 const WINDOW = Dimensions.get('window');
