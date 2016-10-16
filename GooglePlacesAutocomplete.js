@@ -86,7 +86,9 @@ const GooglePlacesAutocomplete = React.createClass({
     filterReverseGeocodingByTypes: React.PropTypes.array,
     predefinedPlacesAlwaysVisible: React.PropTypes.bool,
     enableEmptySections: React.PropTypes.bool,
-    renderDescription: React.PropTypes.func
+    renderDescription: React.PropTypes.func,
+    askLocationPermissionTitle: React.PropTypes.string,
+    askLocationPermissionMessage: React.PropTypes.string,
   },
 
   getDefaultProps() {
@@ -122,7 +124,9 @@ const GooglePlacesAutocomplete = React.createClass({
       filterReverseGeocodingByTypes: [],
       predefinedPlacesAlwaysVisible: false,
       enableEmptySections: true,
-      listViewDisplayed: 'auto'
+      listViewDisplayed: 'auto',
+      askLocationPermissionTitle: 'Location',
+      askLocationPermissionMessage: 'We need to have access to your location to search around you',
     };
   },
 
@@ -204,17 +208,44 @@ const GooglePlacesAutocomplete = React.createClass({
     if (this.refs.textInput) this.refs.textInput.blur();
   },
 
-  getCurrentLocation() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this._requestNearby(position.coords.latitude, position.coords.longitude);
-      },
-      (error) => {
-        this._disableRowLoaders();
-        alert(error.message);
-      },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
+  async requestLocationPermissionAndroid() {
+    if (Platform.OS == 'android') {
+      try {
+        const granted = await PermissionsAndroid.requestPermission(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            'title': this.props.askLocationPermissionTitle,
+            'message': this.props.askLocationPermissionMessage,
+            'buttonPositive': "OK",
+          }
+        )
+        return granted;
+      } catch (err) {
+        console.warn(err)
+      }
+    }
+    else {
+      return true
+    }
+  },
+
+  async getCurrentLocation() {
+    let granted = await this.requestLocationPermissionAndroid();
+    if (granted) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this._requestNearby(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          this._disableRowLoaders();
+          alert(error.message);
+        },
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      );
+    }
+    else {
+      this._disableRowLoaders();
+    }
   },
 
   _enableRowLoader(rowData) {
