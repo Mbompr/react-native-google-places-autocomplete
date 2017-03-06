@@ -214,7 +214,10 @@ export default class GooglePlacesAutocomplete extends Component {
       };
     }
 
-    navigator.geolocation.getCurrentPosition(
+    let getCurrentPosition = this.props.getCurrentPosition ||
+      navigator.geolocation.getCurrentPosition;
+
+    getCurrentPosition(
       (position) => {
         if (this.props.nearbyPlacesAPI === 'None') {
           let currentLocation = {
@@ -736,6 +739,7 @@ GooglePlacesAutocomplete.propTypes = {
   predefinedPlaces: PropTypes.array,
   currentLocation: PropTypes.bool,
   currentLocationLabel: PropTypes.string,
+  getCurrentPosition: React.PropTypes.func,
   nearbyPlacesAPI: PropTypes.string,
   enableHighAccuracyLocation: PropTypes.bool,
   filterReverseGeocodingByTypes: PropTypes.array,
@@ -782,6 +786,7 @@ GooglePlacesAutocomplete.defaultProps = {
   predefinedPlaces: [],
   currentLocation: false,
   currentLocationLabel: 'Current location',
+  getCurrentPosition: null,
   nearbyPlacesAPI: 'GooglePlacesSearch',
   enableHighAccuracyLocation: true,
   filterReverseGeocodingByTypes: [],
