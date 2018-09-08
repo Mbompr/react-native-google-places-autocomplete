@@ -286,6 +286,8 @@ export default class GooglePlacesAutocomplete extends Component {
         key: this.props.query.key,
         placeid: rowData.place_id,
         language: this.props.query.language,
+        fields: this.props.query.fields,
+        sessiontoken: this.props.query.sessiontoken,
       }));
 
       if (this.props.query.origin !== null) {
