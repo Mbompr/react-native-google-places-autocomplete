@@ -225,6 +225,13 @@ const GooglePlacesAutocomplete = React.createClass({
       this._requests[i].abort();
     }
     this._requests = [];
+
+    if (this._autocompleteRequests) {
+      for (let i = 0; i < this._autocompleteRequests.length; i++) {
+        clearTimeout(this._autocompleteRequests[i]);
+      }
+    }
+    this._autocompleteRequests = []
   },
 
   /**
@@ -535,18 +542,21 @@ const GooglePlacesAutocomplete = React.createClass({
     if (text.length >= this.props.minLength) {
 
       if (this.props.autocompleteSearch){
-        this.props.autocompleteSearch(text)
-          .then((result) => {
-              if (typeof result!== 'undefined') {
-                if (this.isMounted()) {
-                  this._results = result;
-                  this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(result),
-                  });
+
+        this._autocompleteRequests.push(setTimeout(() => {
+          this.props.autocompleteSearch(text, this.props.query.sessiontoken)
+            .then((result) => {
+                if (typeof result !== 'undefined') {
+                  if (this.isMounted()) {
+                    this._results = result;
+                    this.setState({
+                      dataSource: this.state.dataSource.cloneWithRows(result),
+                    });
+                  }
                 }
               }
-            }
-          )
+            )
+        }, this.props.delay));
       }
       else {
         const request = new XMLHttpRequest();
