@@ -84,6 +84,8 @@ export default class GooglePlacesAutocomplete extends Component {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();
+    this._results = []
+    this._requests = []
   }
 
   getInitialState() {
@@ -365,8 +367,6 @@ export default class GooglePlacesAutocomplete extends Component {
       this.props.onPress(predefinedPlace, predefinedPlace);
     }
   }
-  _results: []
-  _requests: []
 
   _getPredefinedPlace(rowData) {
     if (rowData.isPredefinedPlace !== true) {
