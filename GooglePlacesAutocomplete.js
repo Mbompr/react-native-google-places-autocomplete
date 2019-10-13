@@ -79,47 +79,9 @@ const defaultStyles = {
 
 export default class GooglePlacesAutocomplete extends Component {
 
-
-  getDefaultProps() {
-    return {
-      placeholder: 'Search',
-      placeholderTextColor: '#A8A8A8',
-      underlineColorAndroid: 'transparent',
-      onPress: () => {},
-      onNotFound: () => {},
-      onFail: () => {},
-      minLength: 0,
-      fetchDetails: false,
-      autoFocus: false,
-      autoFillOnNotFound: false,
-      keyboardShouldPersistTaps: 'always',
-      getDefaultValue: () => '',
-      timeout: 20000,
-      onTimeout: () => console.warn('google places autocomplete: request timeout'),
-      query: {
-        key: 'missing api key',
-        language: 'en',
-        types: 'geocode',
-      },
-      GoogleReverseGeocodingQuery: {},
-      GooglePlacesSearchQuery: {
-        rankby: 'distance',
-        types: 'food',
-      },
-      styles: {},
-      textInputProps: {},
-      enablePoweredByContainer: true,
-      predefinedPlaces: [],
-      currentLocation: false,
-      currentLocationLabel: 'Current location',
-      nearbyPlacesAPI: 'GooglePlacesSearch',
-      enableHighAccuracyLocation: true,
-      getCurrentPosition: null,
-      filterReverseGeocodingByTypes: [],
-      predefinedPlacesAlwaysVisible: false,
-      enableEmptySections: true,
-      listViewDisplayed: 'auto'
-    };
+  constructor(props) {
+    super(props);
+    this.state = this.getInitialState();
   }
 
   getInitialState() {
@@ -795,6 +757,48 @@ GooglePlacesAutocomplete.propTypes = {
   renderRightButton: PropTypes.func,
   listUnderlayColor: PropTypes.string
 };
+
+
+GooglePlacesAutocomplete.defaultProps = {
+  placeholder: 'Search',
+  placeholderTextColor: '#A8A8A8',
+  underlineColorAndroid: 'transparent',
+  onPress: () => {},
+  onNotFound: () => {},
+  onFail: () => {},
+  minLength: 0,
+  fetchDetails: false,
+  autoFocus: false,
+  autoFillOnNotFound: false,
+  keyboardShouldPersistTaps: 'always',
+  getDefaultValue: () => '',
+  timeout: 20000,
+  onTimeout: () => console.warn('google places autocomplete: request timeout'),
+  query: {
+    key: 'missing api key',
+    language: 'en',
+    types: 'geocode',
+  },
+  GoogleReverseGeocodingQuery: {},
+  GooglePlacesSearchQuery: {
+    rankby: 'distance',
+    types: 'food',
+  },
+  styles: {},
+  textInputProps: {},
+  enablePoweredByContainer: true,
+  predefinedPlaces: [],
+  currentLocation: false,
+  currentLocationLabel: 'Current location',
+  nearbyPlacesAPI: 'GooglePlacesSearch',
+  enableHighAccuracyLocation: true,
+  getCurrentPosition: null,
+  filterReverseGeocodingByTypes: [],
+  predefinedPlacesAlwaysVisible: false,
+  enableEmptySections: true,
+  listViewDisplayed: 'auto'
+};
+
 
 
 // this function is still present in the library to be retrocompatible with version < 1.1.0
