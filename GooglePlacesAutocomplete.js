@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import {
   TextInput,
   View,
-  ListView,
   ScrollView,
   Image,
   Text,
@@ -16,6 +15,9 @@ import {
   ActivityIndicator,
   PixelRatio
 } from 'react-native';
+
+import ListView from 'deprecated-react-native-listview'
+
 import Qs from 'qs';
 
 const WINDOW = Dimensions.get('window');
